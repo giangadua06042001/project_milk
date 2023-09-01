@@ -19,7 +19,8 @@ public class Category {
 
     // Các trường khác của Category
     private String nameCategory;
-
+    private String avatarCategory;
     @OneToMany(mappedBy = "category")
     private List<Product> products;
+
 }

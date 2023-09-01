@@ -29,7 +29,7 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("")
+    @GetMapping("list")
     private ResponseEntity<Iterable<Product>>listProduct(){
         return new ResponseEntity<>(productService.findAll(),HttpStatus.OK);
     }
