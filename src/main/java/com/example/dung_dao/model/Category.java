@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Date;
 
 @Entity
-@Table
+@Table(name = "category")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -16,11 +16,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long categoryId;
-
-    // Các trường khác của Category
-    private String nameCategory;
-    private String avatarCategory;
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    private String name;
+    private Date createDate;
+    private Date updateCreate;
+    private String url;
+    @ManyToOne
+    private Product product;
 
 }

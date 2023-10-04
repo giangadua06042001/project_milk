@@ -22,12 +22,13 @@ public class CategoryService implements ICategoryService{
     }
 
     @Override
-    public Category save(Category category) throws Exception {
+    public Category save(Category category) {
         return categoryRepo.save(category);
     }
 
     @Override
     public void remove(Long id) {
-      categoryRepo.deleteById(id);
+        categoryRepo.deleteById(id);
+
     }
 }

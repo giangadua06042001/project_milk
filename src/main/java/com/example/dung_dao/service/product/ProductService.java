@@ -8,10 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ProductService implements IProductService{
+public class ProductService implements IProductService {
     @Autowired
     private IProductRepo productRepo;
-
     @Override
     public Iterable<Product> findAll() {
         return productRepo.findAll();
@@ -23,13 +22,12 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public Product save(Product product) throws Exception {
+    public Product save(Product product) {
         return productRepo.save(product);
     }
 
     @Override
     public void remove(Long id) {
-        productRepo.deleteById(id);
-
+      productRepo.deleteById(id);
     }
 }

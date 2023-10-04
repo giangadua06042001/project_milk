@@ -7,23 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/categories/")
+@RequestMapping("/category")
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
-    @GetMapping("")
-    private ResponseEntity<Iterable<Category>>findAllCategory(){
-        return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
-    }
-    @PostMapping("create")
+    @PostMapping()
     private ResponseEntity<Category>createCategory(@RequestBody Category category){
-        try{
-            return new ResponseEntity<>(categoryService.save(category),HttpStatus.OK);
-
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Date date=new Date();
+        category.setCreateDate(date);
+        return new ResponseEntity<>(categoryService.save(category), HttpStatus.OK);
     }
 }

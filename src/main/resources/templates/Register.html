@@ -1,11 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h1>Day la trang dang ky</h1>
+<form th:object="${newUsers}" th:action="@{/user/create}" method="post" action="#">
+    <table>
+      <tr>
+          <td>AccountName</td>
+          <td>
+              <label>
+                  <input type="text" th:field="*{userName}">
+              </label>
+          </td>
+      </tr>
+         <tr>
+          <td>phone</td>
+          <td>
+              <label>
+                  <input type="text" th:field="*{number}">
+              </label>
+          </td>
+      </tr>
+         <tr>
+          <td>email</td>
+          <td>
+              <label>
+                  <input type="text" th:field="*{email}">
+              </label>
+          </td>
+      </tr>
+         <tr>
+          <td>password</td>
+          <td>
+              <label>
+                  <input type="text" th:field="*{password}">
+              </label>
+          </td>
+      </tr>
+
+    </table>
+
+</form>
 
 </body>
 </html>
