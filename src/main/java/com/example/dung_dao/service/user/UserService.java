@@ -52,4 +52,9 @@ public class UserService implements IUserService {
     public Optional<User> findUserByUserName(String name) {
         return userRepo.findUsersByUserName(name);
     }
+
+    @Override
+    public Optional<User> checkUser(String email, String accountName) {
+        if(userRepo.findUsersByUserName(accountName))
+    }
 }
