@@ -2,10 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>login</title>
 </head>
 <body>
-
+<h4>Login</h4>
+<form th:object="${user}" th:action="@{/session/doLogin}" method="post">
+    <table>
+        <tr>
+            <td><label>Email</label></td>
+            <td>
+                <label>
+                    <input type="text" name="email" th:value="${user.email}">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td>
+                <label>
+                    <input type="password" th:field="*{password}">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    <input type="submit" value="Dang Nhap">
+                </label>
+            </td>
+        </tr>
+    </table>
+</form>
 </body>
-
 </html>

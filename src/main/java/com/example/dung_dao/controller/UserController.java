@@ -2,6 +2,8 @@ package com.example.dung_dao.controller;
 
 import com.example.dung_dao.model.User;
 import com.example.dung_dao.service.user.IUserService;
+import com.example.dung_dao.test.sesion.TestJwt;
+import io.jsonwebtoken.Jwts;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -34,16 +36,31 @@ public class UserController {
         try {
             Date date = new Date();
             user.setDateCreated(date);
-            return new ResponseEntity<>(userService.saveUser(user),HttpStatus.OK);
+            String jwt= TestJwt.createJWT(user);
+            userService.saveUser(user);
+            return new ResponseEntity<>(jwt, HttpStatus.OK);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
     @GetMapping("/show")
-    private ModelAndView showFormRegister(){
-        ModelAndView modelAndView=new ModelAndView("Register");
-        modelAndView.addObject("newUsers",new User());
+    private ModelAndView showFormRegister() {
+        ModelAndView modelAndView = new ModelAndView("Register");
+        modelAndView.addObject("newUsers", new User());
+        return modelAndView;
+    }
+
+    @PostMapping("/create")
+    public String createUser(User user) {
+        userService.save(user);
+        return "redirect:Login";
+    }
+    @GetMapping("/login")
+    private ModelAndView showFormLogin(){
+        ModelAndView modelAndView=new ModelAndView("Login");
+        modelAndView.addObject("user",new User());
         return modelAndView;
     }
 }

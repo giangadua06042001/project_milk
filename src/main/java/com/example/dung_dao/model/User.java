@@ -33,6 +33,7 @@ public class User {
     private Date dateCreated;
     private Date updateCreated;
     private String avatar;
+    private String JWT;
     @NotBlank(message = "Mật khẩu không được để trống")
     @Size(min = 6, max = 32, message = "Kí tự mật khẩu phải từ 6-32.")
     private String password;

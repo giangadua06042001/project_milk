@@ -2,16 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>register</title>
 </head>
 <body>
-<form th:object="${newUsers}" th:action="@{/user/create}" method="post" action="#">
+<h4>Register Account</h4>
+<form th:object="${newUsers}" th:action="@{/users/create}" method="post" action="#">
     <table>
       <tr>
           <td>AccountName</td>
           <td>
               <label>
-                  <input type="text" th:field="*{userName}">
+                  <input type="text" th:field="*{userName} ">
               </label>
           </td>
       </tr>
@@ -39,6 +40,13 @@
               </label>
           </td>
       </tr>
+        <tr>
+            <td>
+                <label>
+                    <input type="submit" value="create">
+                </label>
+            </td>
+        </tr>
 
     </table>
 
