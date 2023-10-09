@@ -2,7 +2,6 @@ package com.example.dung_dao.controller;
 
 import com.example.dung_dao.model.User;
 import com.example.dung_dao.service.user.IUserService;
-import com.example.dung_dao.test.sesion.TestJwt;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -14,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,14 +35,13 @@ public class UserController {
         try {
             Date date = new Date();
             user.setDateCreated(date);
-            String jwt= TestJwt.createJWT(user);
-            userService.saveUser(user);
-            return new ResponseEntity<>(jwt, HttpStatus.OK);
+            return new ResponseEntity<>(userService.saveUser(user), HttpStatus.OK);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 
     @GetMapping("/show")
     private ModelAndView showFormRegister() {
@@ -62,4 +61,5 @@ public class UserController {
         modelAndView.addObject("user",new User());
         return modelAndView;
     }
+
 }

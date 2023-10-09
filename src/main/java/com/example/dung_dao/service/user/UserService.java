@@ -2,6 +2,7 @@ package com.example.dung_dao.service.user;
 
 import com.example.dung_dao.model.User;
 import com.example.dung_dao.repo.IUserRepo;
+import com.example.dung_dao.service.product.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,8 @@ import java.util.Optional;
 public class UserService implements IUserService {
     @Autowired
     private IUserRepo userRepo;
+    @Autowired
+    private IProductService productService;
 
     @Override
     public Iterable<User> findAll() {
@@ -30,7 +33,7 @@ public class UserService implements IUserService {
 
     @Override
     public void remove(Long id) {
-        userRepo.deleteById(id);
+
 
     }
 
@@ -54,7 +57,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> checkUser(String email, String accountName) {
-        if(userRepo.findUsersByUserName(accountName))
+    public boolean isValidUser(String email, String password) {
+     Optional<User>user=userRepo.findUsersByEmail(email);
+     if(user.isPresent()){
+         if(user.get().getPassword().equals(password)){
+             return true;
+         }
+     }
+     return false;
     }
+
 }
