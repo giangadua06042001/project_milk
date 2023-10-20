@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -25,5 +27,7 @@ public class Product {
     private double weight;
     private String pack;
     private String url;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductUser> productUsers = new HashSet<>();
 
 }
