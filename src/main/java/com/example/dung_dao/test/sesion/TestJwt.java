@@ -18,8 +18,6 @@ public class TestJwt {
     @Autowired
     private IUserService iUserService;
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//    private static final byte[] SECRET_KEY_BYTES = Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded();
-//    private static final String SECRETED_KEY = Base64.getEncoder().encodeToString(SECRET_KEY_BYTES);
 
     private static final long EXPIRATION_TIME_MS = 3600000; // Thời gian hết hạn của JWT (1 giờ)
 
@@ -62,6 +60,18 @@ public class TestJwt {
             return true;
         }
         return false;
+    }
+
+    public String checkAuthenticateRequest(HttpServletRequest request){
+        String jwt=extractJWTFromRequest(request);
+        if(jwt!=null){
+            Claims claims=decryptionJwt(jwt);
+            String email=claims.get("email",String.class);
+            String password=claims.get("password",String.class);
+            iUserService.checkIsValidUser(email,password);
+            return email;
+        }
+        return null;
     }
 
     // Phương thức trích JWT từ tiêu đề (Yêu cầu gửi về)

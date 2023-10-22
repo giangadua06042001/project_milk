@@ -10,4 +10,5 @@ public interface IUserService extends IGeneralService<User> {
    Optional<User> findUserByUserName(String name);
 //   Optional<User> checkUser(String email,String accountName);
    boolean isValidUser(String email,String password);
+   String checkIsValidUser(String email,String password);
 }

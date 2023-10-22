@@ -67,4 +67,16 @@ public class UserService implements IUserService {
      return false;
     }
 
+    @Override
+    public String checkIsValidUser(String email, String password) {
+        Optional<User>user=userRepo.findUsersByEmail(email);
+        if(user.isPresent()){
+            if(user.get().getPassword().equals(password)){
+                return email;
+            }
+        }
+        return null;
+    }
+
+
 }

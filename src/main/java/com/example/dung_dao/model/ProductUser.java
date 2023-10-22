@@ -22,4 +22,9 @@ public class ProductUser {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public ProductUser(Product product, User user) {
+        this.product = product;
+        this.user = user;
+    }
 }

@@ -18,16 +18,18 @@ public class LoginJWT {
     private IUserService userService;
 
     @PostMapping("login/{id}")
-    private ResponseEntity<?> testId(@RequestParam("email") String email,
+    private ResponseEntity<Claims> testId(@RequestParam("email") String email,
                                      @RequestParam("password") String password,
                                      @PathVariable("id") Long id) {
         Optional<User> user = userService.findById(id);
-        if (user.get().getEmail().equals(email) && user.get().getPassword().equals(password)) {
-            String jwt = TestJwt.createJWT(user.get());
-            Claims jwtExample = TestJwt.decryptionJwt(jwt);
-            user.get().setJWT(jwt);
-            userService.save(user.get());
-            return new ResponseEntity<>(jwtExample, HttpStatus.OK);
+        if(user.isPresent()){
+            if (user.get().getEmail().equals(email) && user.get().getPassword().equals(password)) {
+                String jwt = TestJwt.createJWT(user.get());
+                Claims jwtExample = TestJwt.decryptionJwt(jwt);
+                user.get().setJWT(jwt);
+                userService.save(user.get());
+                return new ResponseEntity<>(jwtExample, HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

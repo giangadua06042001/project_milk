@@ -35,9 +35,27 @@ public class ProductController {
             Date date=new Date();
             product.setDateCreated(date);
             Product productCreate=productService.save(product);
-            ProductUser productUser=new ProductUser(product.getProductId(), productCreate,user.get());
+
+            ProductUser productUser=new ProductUser( productCreate.getProductId(),productCreate,user.get());
             productUserService.save(productUser);
             return new ResponseEntity<>(productCreate, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+    @PostMapping("/creat/{id}")
+    private ResponseEntity<Product>testCreateProduct(@RequestBody Product product,HttpServletRequest request,@PathVariable Long id){
+        Optional<User>user=userService.findById(id);
+        String email= testJwt.checkAuthenticateRequest(request);
+        if (user.isPresent()) {
+            if (email.equals(user.get().getEmail())) {
+                Date date = new Date();
+                product.setDateCreated(date);
+                Product productTest = productService.save(product);
+                ProductUser productUser = new ProductUser(productTest.getProductId(), productTest, user.get());
+                productUserService.save(productUser);
+                return new ResponseEntity<>(productTest, HttpStatus.OK);
+            }
+
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
