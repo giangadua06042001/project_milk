@@ -52,9 +52,15 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public Optional<User> findUsersByEmail(String email) {
+        return userRepo.findUsersByEmail(email);
+    }
+
+    @Override
     public Optional<User> findUserByUserName(String name) {
         return userRepo.findUsersByUserName(name);
     }
+
 
     @Override
     public boolean isValidUser(String email, String password) {
@@ -68,14 +74,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public String checkIsValidUser(String email, String password) {
+    public boolean checkIsValidUser(String email, String password) {
         Optional<User>user=userRepo.findUsersByEmail(email);
         if(user.isPresent()){
             if(user.get().getPassword().equals(password)){
-                return email;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
 

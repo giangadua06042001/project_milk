@@ -7,8 +7,9 @@ import java.util.Optional;
 
 public interface IUserService extends IGeneralService<User> {
    User saveUser(User user)throws Exception;
+   Optional<User> findUsersByEmail(String email);
    Optional<User> findUserByUserName(String name);
 //   Optional<User> checkUser(String email,String accountName);
    boolean isValidUser(String email,String password);
-   String checkIsValidUser(String email,String password);
+   boolean checkIsValidUser(String email,String password);
 }

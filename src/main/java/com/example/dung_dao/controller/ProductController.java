@@ -28,41 +28,24 @@ public class ProductController {
     IProductUserService productUserService;
     @Autowired
     private TestJwt testJwt;
-    @PostMapping("/test/{id}")
-    private ResponseEntity<Product>createProduct(@RequestBody Product product, HttpServletRequest request,@PathVariable Long id){
-        Optional<User>user=userService.findById(id);
-        if(testJwt.authenticateRequest(request)){
-            Date date=new Date();
-            product.setDateCreated(date);
-            Product productCreate=productService.save(product);
-
-            ProductUser productUser=new ProductUser( productCreate.getProductId(),productCreate,user.get());
-            productUserService.save(productUser);
-            return new ResponseEntity<>(productCreate, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
-    @PostMapping("/creat/{id}")
-    private ResponseEntity<Product>testCreateProduct(@RequestBody Product product,HttpServletRequest request,@PathVariable Long id){
-        Optional<User>user=userService.findById(id);
-        String email= testJwt.checkAuthenticateRequest(request);
+    @PostMapping("/create")
+    private ResponseEntity<Product> createProduct(@RequestBody Product product, HttpServletRequest request) {
+        Optional<User> user = testJwt.checkAuthenticateRequest(request);
         if (user.isPresent()) {
-            if (email.equals(user.get().getEmail())) {
-                Date date = new Date();
-                product.setDateCreated(date);
-                Product productTest = productService.save(product);
-                ProductUser productUser = new ProductUser(productTest.getProductId(), productTest, user.get());
-                productUserService.save(productUser);
-                return new ResponseEntity<>(productTest, HttpStatus.OK);
-            }
-
+            Date date = new Date();
+            product.setDateCreated(date);
+            Product productNew = productService.save(product);
+            ProductUser productUser = new ProductUser(product, user.get());
+            productUserService.save(productUser);
+            return new ResponseEntity<>(productNew, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
+
     @GetMapping()
-    private ResponseEntity<Iterable<Product>>listProduct(){
-      Iterable<Product>listProduct=productService.findAll();
-      return new ResponseEntity<>(listProduct,HttpStatus.OK);
+    private ResponseEntity<Iterable<Product>> listProduct() {
+        Iterable<Product> listProduct = productService.findAll();
+        return new ResponseEntity<>(listProduct, HttpStatus.OK);
     }
 }
 

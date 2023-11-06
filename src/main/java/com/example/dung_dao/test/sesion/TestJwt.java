@@ -4,7 +4,9 @@ import com.example.dung_dao.model.User;
 import com.example.dung_dao.service.user.IUserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class TestJwt {
@@ -22,6 +25,14 @@ public class TestJwt {
     private static final long EXPIRATION_TIME_MS = 3600000; // Thời gian hết hạn của JWT (1 giờ)
 
     // Tạo JWT
+    public void storeJwtInCookie(HttpServletResponse response, String jwt) {
+        Cookie cookie = new Cookie("jwt", jwt);
+        cookie.setPath("/"); // Đảm bảo cookie có thể sử dụng trên toàn bộ ứng dụng
+        cookie.setMaxAge(3600); // Thời gian sống của cookie (giây), ở đây là 1 giờ
+        cookie.setHttpOnly(true); // Chỉ cho phép truy cập cookie qua HTTP, không cho JavaScript
+        response.addCookie(cookie);
+    }
+
     public static String createJWT(User user) {
         Date now = new Date();
         Date expirationTime = new Date(now.getTime() + EXPIRATION_TIME_MS);
@@ -50,28 +61,19 @@ public class TestJwt {
         return claimsJwt;
     }
 
-    public boolean authenticateRequest(HttpServletRequest request) {
-        String jwt = extractJWTFromRequest(request);
-        if (jwt != null) {
-            Claims claims = decryptionJwt(jwt);
-            String email = claims.get("email", String.class);
-            String password = claims.get("password", String.class);
-            iUserService.isValidUser(email, password);
-            return true;
-        }
-        return false;
-    }
 
-    public String checkAuthenticateRequest(HttpServletRequest request){
+
+    public Optional<User> checkAuthenticateRequest(HttpServletRequest request){
         String jwt=extractJWTFromRequest(request);
         if(jwt!=null){
             Claims claims=decryptionJwt(jwt);
             String email=claims.get("email",String.class);
             String password=claims.get("password",String.class);
             iUserService.checkIsValidUser(email,password);
-            return email;
+            return iUserService.findUsersByEmail(email);
+
         }
-        return null;
+        return Optional.empty();
     }
 
     // Phương thức trích JWT từ tiêu đề (Yêu cầu gửi về)

@@ -10,9 +10,13 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface IUserRepo extends JpaRepository<User, Long> {
-    Optional<User>findUsersByEmail(String email);
-    Optional<User>findUsersByUserName(String name);
-    Optional<User>findUsersByNumber(String number);
-    Optional<User>findUsersByPassword(String password);
+    Optional<User> findUsersByEmail(String email);
+
+    Optional<User> findUsersByUserName(String name);
+
+    Optional<User> findUsersByNumber(String number);
+
+
+
 
 }
